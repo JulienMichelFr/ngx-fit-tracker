@@ -1,4 +1,11 @@
-<form [formGroup]="form">
+<mat-card>
+  <mat-card-content>
+    <p>Avg: {{last10Avg}}</p>
+    <p>Loss: {{last10Loss}}</p>
+  </mat-card-content>
+</mat-card>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-card>
     <mat-card-content>
       <mat-form-field>
@@ -11,9 +18,15 @@
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-button>Annuler</button>
-      <button mat-button color="primary">Envoyer</button>
+      <button mat-button type="button">Annuler</button>
+      <button mat-button color="primary" type="submit" [disabled]="form.invalid">Envoyer</button>
     </mat-card-actions>
   </mat-card>
 </form>
+<mat-card>
+  <mat-card-content>Évolution</mat-card-content>
+  <mat-card-content>
+    <canvas #chart width="600" height="600"></canvas>
+  </mat-card-content>
+</mat-card>
 
