@@ -1,4 +1,5 @@
-mat-card-content {
+
+form mat-card-content {
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
@@ -6,4 +7,17 @@ mat-card-content {
 
 mat-card {
   margin-top: 15px;
+}
+
+.negative {
+  color: #20b928;
+}
+.positive {
+  color: #ff0000;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
 }

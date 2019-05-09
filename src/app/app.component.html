@@ -1,7 +1,13 @@
 <mat-card>
-  <mat-card-content>
-    <p>Avg: {{last10Avg}}</p>
-    <p>Loss: {{last10Loss}}</p>
+  <mat-card-content class="row">
+    <div>
+      <p>Avg</p>
+      <h1>{{last10Avg}}</h1>
+    </div>
+    <div [class.negative]="last10Loss <= 0" [class.positive]="last10Loss > 0">
+      <p>Loss</p>
+      <h1>{{last10Loss}}</h1>
+    </div>
   </mat-card-content>
 </mat-card>
 
