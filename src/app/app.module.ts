@@ -21,6 +21,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { WeightFormComponent } from './components/weight-form/weight-form.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent],
@@ -36,7 +37,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     MatInputModule,
     MatDatepickerModule,
     MatButtonModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]

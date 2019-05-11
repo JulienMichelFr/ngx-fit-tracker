@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   hasValueToday$: Observable<boolean>;
 
   constructor(
-    private afAuth: AngularFireAuth,
+    public afAuth: AngularFireAuth,
     private afStore: AngularFirestore
   ) {
     this.collection = afStore.collection<DBWeight>('weight', (ref => ref.orderBy('date')));
