@@ -9,7 +9,7 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
-import { map, startWith, takeLast } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import {firestore} from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   last10Avg$: Observable<number>;
   last10Diff$: Observable<number>;
   stats$: Observable<Stats>;
+  hasValueToday$: Observable<boolean>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -76,6 +77,13 @@ export class AppComponent implements OnInit, OnDestroy {
           difference: diff,
           average: avg
         };
+      })
+    );
+
+    this.hasValueToday$ = this.data$.pipe(
+      map((values) => {
+        return !!values.find(({ date }) => date.toDateString() === new Date().toDateString()
+        )
       })
     );
   }

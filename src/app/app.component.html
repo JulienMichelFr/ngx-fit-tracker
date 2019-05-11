@@ -1,6 +1,8 @@
 <div *ngIf="(afAuth.user | async) as user; else: showLogin">
-  <app-weight-form (submit)="addValue($event)"></app-weight-form>
-  <hr>
+  <div *ngIf="!(hasValueToday$ | async)">
+    <app-weight-form (submit)="addValue($event)"></app-weight-form>
+    <hr>
+  </div>
   <app-stats [values]="stats$ | async"></app-stats>
   <hr>
   <app-chart [data]="last10$ | async"></app-chart>
