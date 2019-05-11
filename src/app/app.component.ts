@@ -13,6 +13,7 @@ import { map, tap } from 'rxjs/operators';
 import {firestore} from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     public afAuth: AngularFireAuth,
-    private afStore: AngularFirestore
+    private afStore: AngularFirestore,
+    private swUpdate: SwUpdate
   ) {
     this.collection = afStore.collection<DBWeight>('weight', (ref => ref.orderBy('date')));
     this.data$ = this.collection.valueChanges().pipe(
@@ -86,6 +88,15 @@ export class AppComponent implements OnInit, OnDestroy {
         )
       })
     );
+
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        if (confirm('Une mise à jour est disponible. Voulez-vous l\'installer ?')) {
+          window.location.reload();
+        }
+      });
+    }
+
   }
 
   ngOnDestroy(): void {
