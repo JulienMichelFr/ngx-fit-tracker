@@ -1,12 +1,12 @@
 <mat-card>
   <mat-card-content class="row">
     <div>
-      <p>Avg</p>
-      <h1>{{ values.average }}</h1>
+      <p>Average</p>
+      <h1>{{ values?.average }}</h1>
     </div>
-    <div [class.negative]="values.difference <= 0" [class.positive]="values.difference > 0">
-      <p>Loss</p>
-      <h1>{{ values.difference }}</h1>
+    <div [class.negative]="values?.difference <= 0" [class.positive]="values?.difference > 0">
+      <p>Difference</p>
+      <h1>{{ values?.difference }}</h1>
     </div>
   </mat-card-content>
 </mat-card>

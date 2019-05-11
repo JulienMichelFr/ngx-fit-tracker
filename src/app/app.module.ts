@@ -20,6 +20,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ChartComponent } from './components/chart/chart.component';
 import { WeightFormComponent } from './components/weight-form/weight-form.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent],
@@ -29,6 +30,7 @@ import { StatsComponent } from './components/stats/stats.component';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

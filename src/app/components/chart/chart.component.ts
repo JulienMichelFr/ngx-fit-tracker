@@ -22,10 +22,10 @@ export class ChartComponent implements AfterViewInit, OnChanges {
       return
     }
     if (changes && changes.data && changes.data.currentValue) {
-      this.chart.data.labels = this.data.map(({ date }) =>
+      this.chart.data.labels = (this.data || []).map(({ date }) =>
         new Date(date).toLocaleDateString()
       );
-      this.chart.data.datasets[0].data = this.data.map(({ value }) => value);
+      this.chart.data.datasets[0].data = (this.data || []).map(({ value }) => value);
       this.chart.update();
     }
   }
@@ -34,13 +34,13 @@ export class ChartComponent implements AfterViewInit, OnChanges {
     this.chart = new Chart(this.chartElt.nativeElement, {
       type: 'line',
       data: {
-        labels: this.data.map(({ date }) =>
+        labels: (this.data || []).map(({ date }) =>
           new Date(date).toLocaleDateString()
         ),
         datasets: [
           {
             label: 'Poids',
-            data: this.data.map(({ value }) => value),
+            data: (this.data || []).map(({ value }) => value),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',

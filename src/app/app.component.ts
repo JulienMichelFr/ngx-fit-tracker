@@ -1,63 +1,95 @@
 import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
+  Component, OnDestroy, OnInit
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Chart } from 'chart.js';
-import { data } from './data';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Stats, Weight } from './models';
+import { DBWeight, Stats, Weight } from './models';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection
+} from '@angular/fire/firestore';
+import { combineLatest, Observable } from 'rxjs';
+import { map, startWith, takeLast } from 'rxjs/operators';
+import {firestore} from 'firebase/app';
+import Timestamp = firestore.Timestamp;
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  private data: Weight[] = [...data];
+export class AppComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
+  private collection: AngularFirestoreCollection<DBWeight>;
+  data$: Observable<Weight[]>;
+  last10$: Observable<Weight[]>;
+  last10Avg$: Observable<number>;
+  last10Diff$: Observable<number>;
+  stats$: Observable<Stats>;
 
-  form: FormGroup = new FormGroup({
-    date: new FormControl(new Date(), [Validators.required]),
-    value: new FormControl(null, [Validators.required])
-  });
-
-  get last10() {
-    return [...this.data].slice(Math.max([...this.data].length - 10, 1));
-  }
-
-  private get last10Avg() {
-    return (
-      Math.round(
-        (this.last10.reduce((acc, value: any) => acc + value.value, 0) / 10) *
-        100
-      ) / 100
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afStore: AngularFirestore
+  ) {
+    this.collection = afStore.collection<DBWeight>('weight', (ref => ref.orderBy('date')));
+    this.data$ = this.collection.valueChanges().pipe(
+      map((value: DBWeight[]) => {
+        return value.map((v): Weight => {
+          return { value: v.value, date: (v.date as unknown as Timestamp).toDate() };
+        });
+      })
     );
   }
 
-  private get last10Loss() {
-    const [first] = this.last10;
-    const [last] = this.last10.reverse();
-    return Math.round((last.value - first.value) * 100) / 100;
+  ngOnInit(): void {
+    this.last10$ = this.data$.pipe(map((values) => {
+      if (values.length <= 10) {
+        return values
+      }
+      return [...values].slice(Math.max([...values].length - 10, 1));
+    }));
+
+    this.last10Avg$ = this.last10$.pipe(
+      map((values: Weight[]) => {
+        return (
+          Math.round(
+            (values.reduce((acc, value: any) => acc + value.value, 0) / values.length) *
+            100
+          ) / 100
+        );
+      })
+    );
+    this.last10Diff$ = this.last10$.pipe(
+      map((values: Weight[]) => {
+        if (!values.length) {
+          return 0
+        }
+        const [first] = values;
+        const [last] = values.reverse();
+        return Math.round((last.value - first.value) * 100) / 100;
+      })
+    );
+    this.stats$ = combineLatest(this.last10Avg$, this.last10Diff$).pipe(
+      map(([avg, diff]): Stats => {
+        return {
+          difference: diff,
+          average: avg
+        };
+      })
+    );
   }
 
-  get stats(): Stats {
-    return {
-      average: this.last10Avg,
-      difference: this.last10Loss
-    }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe()
   }
-
-  constructor(private afAuth: AngularFireAuth) {}
-
 
   addValue(weight: Weight) {
-    this.data.push(weight);
+    const {uid} = this.afAuth.auth.currentUser;
+    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), uid});
   }
 
-  signIn({ login, password }: { login: string, password: string }) {
-    this.afAuth.auth.signInWithEmailAndPassword(login, password)
+  signIn({ login, password }: { login: string; password: string }) {
+    this.afAuth.auth.signInWithEmailAndPassword(login, password);
   }
 }
