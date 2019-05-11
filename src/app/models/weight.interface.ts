@@ -7,7 +7,7 @@ export interface Weight {
 }
 
 export interface DBWeight {
-  uid: string;
+  user: string;
   date: Timestamp;
   value: number;
 }

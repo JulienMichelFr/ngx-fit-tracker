@@ -9,7 +9,7 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
-import { map} from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import {firestore} from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   addValue(weight: Weight) {
     const {uid} = this.afAuth.auth.currentUser;
-    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), uid});
+    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), user: uid});
   }
 
   signIn({ login, password }: { login: string; password: string }) {
