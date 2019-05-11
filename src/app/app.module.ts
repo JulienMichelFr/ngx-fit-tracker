@@ -15,14 +15,20 @@ import {
 } from '@angular/material';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
+import { LoginComponent } from './components/login/login.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { ChartComponent } from './components/chart/chart.component';
+import { WeightFormComponent } from './components/weight-form/weight-form.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

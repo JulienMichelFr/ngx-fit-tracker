@@ -1,0 +1,14 @@
+@import "../../../styles";
+
+.negative {
+  color: map-get($theme-primary, default);
+}
+.positive {
+  color: map-get($theme-warn, default);
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
