@@ -49,3 +49,4 @@ Thumbs.db
 firebase.config.ts
 firebase.json
 .firebaserc
+.firebase
