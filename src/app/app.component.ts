@@ -14,7 +14,7 @@ import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
 import { SwUpdate } from '@angular/service-worker';
-import { startOfDay, endOfDay, subDays } from 'date-fns';
+import { startOfDay, endOfDay, subDays, compareAsc } from 'date-fns';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +32,9 @@ export class AppComponent implements OnInit, OnDestroy {
   last10$: Observable<Weight[]>;
   last10Avg$: Observable<number>;
   last10Diff$: Observable<number>;
+  min$: Observable<Weight>;
+  max$: Observable<Weight>;
+  current$: Observable<number>;
   stats$: Observable<Stats>;
   hasValueToday$: Observable<boolean>;
   startDate = startOfDay(subDays(new Date(), 10));
@@ -61,9 +64,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.data$).pipe(
       auditTime(1000),
       map(([start, end, values]) => {
-        console.log('called', {start: start.toDateString(), end: end.toDateString()});
+        console.log('called', { start: start.toDateString(), end: end.toDateString() });
         return values.filter((v) => {
-          return endOfDay(v.date) > start && v.date < endOfDay(end)
+          return endOfDay(v.date) > start && v.date < endOfDay(end);
         });
       }));
 
@@ -87,11 +90,53 @@ export class AppComponent implements OnInit, OnDestroy {
         return Math.round((last.value - first.value) * 100) / 100;
       })
     );
-    this.stats$ = combineLatest(this.last10Avg$, this.last10Diff$).pipe(
-      map(([avg, diff]): Stats => {
+
+    this.max$ = this.data$.pipe(
+      map(values => values.reduce((acc, v): Weight => {
+        if (!acc) {
+          return v;
+        }
+        if (v.value > acc.value) {
+          return v;
+        }
+        return acc;
+      }, null))
+    );
+
+    this.min$ = this.data$.pipe(
+      map(values => values.reduce((acc, v): Weight => {
+        if (!acc) {
+          return v;
+        }
+        if (v.value < acc.value) {
+          return v;
+        }
+        return acc;
+      }, null))
+    );
+
+    this.current$ = this.data$.pipe(
+      map(values => {
+        const [first, ...rest] = values.sort((a, b) => compareAsc(a.value, b.value)).map(v => v.value);
+        return first;
+      })
+    );
+
+
+    this.stats$ = combineLatest(
+      this.last10Avg$,
+      this.last10Diff$,
+      this.min$,
+      this.max$,
+      this.current$
+    ).pipe(
+      map(([avg, diff, min, max, current]): Stats => {
         return {
           difference: diff,
-          average: avg
+          average: avg,
+          min,
+          max,
+          current
         };
       })
     );
