@@ -1,5 +1,5 @@
 <div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" [dataSource]="values.reverse()" matSort aria-label="Values">
+  <table mat-table class="full-width-table" [dataSource]="(values || []).reverse()" matSort aria-label="Values">
     <!-- Id Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Date</th>

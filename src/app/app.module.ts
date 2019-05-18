@@ -23,9 +23,10 @@ import { StatsComponent } from './components/stats/stats.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ValuesTableComponent } from './components/values-table/values-table.component';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent, ValuesTableComponent],
+  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent, ValuesTableComponent, DateRangePickerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

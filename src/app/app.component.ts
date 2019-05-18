@@ -10,10 +10,11 @@ import {
 } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import {firestore} from 'firebase/app';
+import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
 import { SwUpdate } from '@angular/service-worker';
+import { startOfDay, endOfDay, subDays } from 'date-fns';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
   last10Diff$: Observable<number>;
   stats$: Observable<Stats>;
   hasValueToday$: Observable<boolean>;
+  startDate = startOfDay(subDays(new Date(), 10));
+  endDate = endOfDay(new Date());
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -48,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.last10$ = this.data$.pipe(map((values) => {
       if (values.length <= 10) {
-        return values
+        return values;
       }
       return [...values].slice(Math.max([...values].length - 10, 1));
     }));
@@ -66,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.last10Diff$ = this.last10$.pipe(
       map((values: Weight[]) => {
         if (!values.length) {
-          return 0
+          return 0;
         }
         const [first] = values;
         const [last] = values.reverse();
@@ -85,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.hasValueToday$ = this.data$.pipe(
       map((values) => {
         return !!values.find(({ date }) => date.toDateString() === new Date().toDateString()
-        )
+        );
       })
     );
 
@@ -100,15 +103,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe()
+    this.subs.unsubscribe();
   }
 
   addValue(weight: Weight) {
-    const {uid} = this.afAuth.auth.currentUser;
-    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), user: uid});
+    const { uid } = this.afAuth.auth.currentUser;
+    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), user: uid });
   }
 
   signIn({ login, password }: { login: string; password: string }) {
     this.afAuth.auth.signInWithEmailAndPassword(login, password);
+  }
+
+  dateChange({ start, end }: { start: Date, end: Date }) {
+    console.log('changed')
+    this.startDate = start;
+    this.endDate = end;
   }
 }
