@@ -13,6 +13,9 @@
         <mat-datepicker touchUi="true" #endDateDatePicker></mat-datepicker>
       </mat-form-field>
     </div>
+    <div>
+      <button mat-raised-button *ngFor="let range of ranges" (click)="selectRange(range)">{{range.label}}</button>
+    </div>
 
   </mat-card-content>
 </mat-card>

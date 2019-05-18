@@ -8,8 +8,8 @@ import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { combineLatest, merge, Observable, Subject } from 'rxjs';
+import { auditTime, map, startWith, tap, throttleTime } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
@@ -24,6 +24,10 @@ import { startOfDay, endOfDay, subDays } from 'date-fns';
 export class AppComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   private collection: AngularFirestoreCollection<DBWeight>;
+  private startSubject = new Subject<Date>();
+  private endSubject = new Subject<Date>();
+
+
   data$: Observable<Weight[]>;
   last10$: Observable<Weight[]>;
   last10Avg$: Observable<number>;
@@ -46,15 +50,22 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       })
     );
+    this.startSubject.next(this.startDate);
+    this.endSubject.next(this.endDate);
   }
 
   ngOnInit(): void {
-    this.last10$ = this.data$.pipe(map((values) => {
-      if (values.length <= 10) {
-        return values;
-      }
-      return [...values].slice(Math.max([...values].length - 10, 1));
-    }));
+    this.last10$ = combineLatest(
+      this.startSubject.asObservable().pipe(startWith(this.startDate)),
+      this.endSubject.asObservable().pipe(startWith(this.endDate)),
+      this.data$).pipe(
+      auditTime(1000),
+      map(([start, end, values]) => {
+        console.log('called', {start: start.toDateString(), end: end.toDateString()});
+        return values.filter((v) => {
+          return endOfDay(v.date) > start && v.date < endOfDay(end)
+        });
+      }));
 
     this.last10Avg$ = this.last10$.pipe(
       map((values: Weight[]) => {
@@ -116,8 +127,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   dateChange({ start, end }: { start: Date, end: Date }) {
-    console.log('changed')
+    console.log('changed');
     this.startDate = start;
     this.endDate = end;
+    this.startSubject.next(start);
+    this.endSubject.next(end);
   }
 }
