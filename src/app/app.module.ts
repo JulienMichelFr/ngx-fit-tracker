@@ -11,7 +11,7 @@ import {
   MatDatepickerModule,
   MatFormFieldModule,
   MatInputModule,
-  MatNativeDateModule
+  MatNativeDateModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule
 } from '@angular/material';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
@@ -22,9 +22,10 @@ import { WeightFormComponent } from './components/weight-form/weight-form.compon
 import { StatsComponent } from './components/stats/stats.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ValuesTableComponent } from './components/values-table/values-table.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent],
+  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent, ValuesTableComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -38,9 +39,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MatDatepickerModule,
     MatButtonModule,
     MatNativeDateModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    MatTabsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -5,7 +5,15 @@
   </div>
   <app-stats [values]="stats$ | async"></app-stats>
   <hr>
-  <app-chart [data]="last10$ | async"></app-chart>
+  <mat-tab-group>
+    <mat-tab label="Graph">
+      <app-chart [data]="last10$ | async"></app-chart>
+    </mat-tab>
+    <mat-tab label="Values">
+      <app-values-table [values]="last10$ | async"></app-values-table>
+    </mat-tab>
+  </mat-tab-group>
+
 </div>
 <ng-template #showLogin>
   <app-login (submit)="signIn($event)"></app-login>
