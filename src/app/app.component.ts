@@ -61,17 +61,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.last10$ = combineLatest(
+    this.last10$ = combineLatest([
       this.startSubject.asObservable().pipe(startWith(this.startDate)),
       this.endSubject.asObservable().pipe(startWith(this.endDate)),
       this.data$
-    ).pipe(
+    ]).pipe(
       auditTime(1000),
       map(([start, end, values]) => {
-        console.log('called', {
-          start: start.toDateString(),
-          end: end.toDateString()
-        });
         return values.filter(v => {
           return endOfDay(v.date) > start && v.date < endOfDay(end);
         });
@@ -137,13 +133,13 @@ export class AppComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.stats$ = combineLatest(
+    this.stats$ = combineLatest([
       this.last10Avg$,
       this.last10Diff$,
       this.min$,
       this.max$,
       this.current$
-    ).pipe(
+    ]).pipe(
       map(
         ([avg, diff, min, max, current]): Stats => {
           return {
