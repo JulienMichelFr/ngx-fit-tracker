@@ -26,9 +26,9 @@
         <mat-datepicker touchUi="true" #endDateDatePicker></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="button-container">
+    <div class="container">
       <button
-        mat-raised-button
+        mat-raised-button color="accent"
         *ngFor="let range of ranges"
         (click)="selectRange(range)"
       >
