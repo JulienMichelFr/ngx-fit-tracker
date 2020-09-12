@@ -3,15 +3,35 @@
     <mat-card-title>Login</mat-card-title>
     <mat-card-content>
       <mat-form-field>
-        <input matInput type="email" formControlName="login" placeholder="Email" autocomplete="user email">
+        <input
+          matInput
+          type="email"
+          formControlName="login"
+          placeholder="Email"
+          autocomplete="user email"
+        />
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" formControlName="password" placeholder="Password" autocomplete="current-password">
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
       </mat-form-field>
     </mat-card-content>
   </mat-card>
   <mat-card-actions align="end">
     <button type="reset" mat-button>Cancel</button>
-    <button type="button" mat-raised-button color="primary" [disabled]="form.invalid" (click)="doLogin()">Login</button>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid"
+      (click)="doLogin()"
+    >
+      Login
+    </button>
   </mat-card-actions>
 </form>

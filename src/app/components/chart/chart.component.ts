@@ -1,5 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { data } from '../../data';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { Chart } from 'chart.js';
 import { Weight } from '../../models';
 
@@ -9,23 +16,24 @@ import { Weight } from '../../models';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements AfterViewInit, OnChanges {
-
   @Input() data: Weight[] = [];
 
   private chart: Chart;
   @ViewChild('chart') chartElt: ElementRef;
 
-  constructor() { }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.chart) {
-      return
+      return;
     }
     if (changes && changes.data && changes.data.currentValue) {
       this.chart.data.labels = (this.data || []).map(({ date }) =>
         new Date(date).toLocaleDateString()
       );
-      this.chart.data.datasets[0].data = (this.data || []).map(({ value }) => value);
+      this.chart.data.datasets[0].data = (this.data || []).map(
+        ({ value }) => value
+      );
       this.chart.update();
     }
   }
@@ -75,5 +83,4 @@ export class ChartComponent implements AfterViewInit, OnChanges {
       }
     });
   }
-
 }

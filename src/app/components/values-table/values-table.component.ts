@@ -2,7 +2,6 @@ import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Weight } from '../../models';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-values-table',
@@ -16,6 +15,5 @@ export class ValuesTableComponent implements AfterViewInit {
   @Input() values: Weight[] = [];
   displayedColumns = ['date', 'value'];
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 }

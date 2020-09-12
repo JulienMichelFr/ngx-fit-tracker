@@ -7,12 +7,9 @@ import { Stats } from '../../models';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-
   @Input() values: Stats;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

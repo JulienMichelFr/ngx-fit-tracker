@@ -27,7 +27,15 @@ import { ValuesTableComponent } from './components/values-table/values-table.com
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ChartComponent, WeightFormComponent, StatsComponent, ValuesTableComponent, DateRangePickerComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    ChartComponent,
+    WeightFormComponent,
+    StatsComponent,
+    ValuesTableComponent,
+    DateRangePickerComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -42,7 +50,9 @@ import { DateRangePickerComponent } from './components/date-range-picker/date-ra
     MatButtonModule,
     MatNativeDateModule,
     MatTabsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production
+    }),
     MatTableModule,
     MatPaginatorModule,
     MatSortModule
@@ -50,5 +60,4 @@ import { DateRangePickerComponent } from './components/date-range-picker/date-ra
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

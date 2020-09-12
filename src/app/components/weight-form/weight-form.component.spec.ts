@@ -8,9 +8,8 @@ describe('WeightFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WeightFormComponent ]
-    })
-    .compileComponents();
+      declarations: [WeightFormComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

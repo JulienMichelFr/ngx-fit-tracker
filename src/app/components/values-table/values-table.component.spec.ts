@@ -12,12 +12,12 @@ describe('ValuesTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ValuesTableComponent ],
+      declarations: [ValuesTableComponent],
       imports: [
         NoopAnimationsModule,
         MatPaginatorModule,
         MatSortModule,
-        MatTableModule,
+        MatTableModule
       ]
     }).compileComponents();
   }));

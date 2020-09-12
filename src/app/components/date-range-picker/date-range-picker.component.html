@@ -3,19 +3,37 @@
   <mat-card-content>
     <div class="container" [formGroup]="form">
       <mat-form-field>
-        <input matInput [matDatepicker]="startDatePicker" formControlName="start" placeholder="Start" [max]="end"
-               (click)="startDatePicker.open()">
+        <input
+          matInput
+          [matDatepicker]="startDatePicker"
+          formControlName="start"
+          placeholder="Start"
+          [max]="end"
+          (click)="startDatePicker.open()"
+        />
         <mat-datepicker touchUi="true" #startDatePicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [matDatepicker]="endDateDatePicker" formControlName="end" placeholder="End" [min]="start"
-               (click)="endDateDatePicker.open()" [max]="maxDate">
+        <input
+          matInput
+          [matDatepicker]="endDateDatePicker"
+          formControlName="end"
+          placeholder="End"
+          [min]="start"
+          (click)="endDateDatePicker.open()"
+          [max]="maxDate"
+        />
         <mat-datepicker touchUi="true" #endDateDatePicker></mat-datepicker>
       </mat-form-field>
     </div>
     <div class="button-container">
-      <button mat-raised-button *ngFor="let range of ranges" (click)="selectRange(range)">{{range.label}}</button>
+      <button
+        mat-raised-button
+        *ngFor="let range of ranges"
+        (click)="selectRange(range)"
+      >
+        {{ range.label }}
+      </button>
     </div>
-
   </mat-card-content>
 </mat-card>

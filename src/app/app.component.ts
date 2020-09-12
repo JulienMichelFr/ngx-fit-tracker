@@ -1,20 +1,17 @@
-import {
-  Component, OnDestroy, OnInit
-} from '@angular/core';
-import { Chart } from 'chart.js';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DBWeight, Stats, Weight } from './models';
 import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
-import { combineLatest, merge, Observable, Subject } from 'rxjs';
-import { auditTime, map, startWith, tap, throttleTime } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { auditTime, map, startWith } from 'rxjs/operators';
 import { firestore } from 'firebase/app';
-import Timestamp = firestore.Timestamp;
 import { SubSink } from 'subsink';
 import { SwUpdate } from '@angular/service-worker';
-import { startOfDay, endOfDay, subDays, compareAsc } from 'date-fns';
+import { compareAsc, endOfDay, startOfDay, subDays } from 'date-fns';
+import Timestamp = firestore.Timestamp;
 
 @Component({
   selector: 'app-root',
@@ -26,7 +23,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private collection: AngularFirestoreCollection<DBWeight>;
   private startSubject = new Subject<Date>();
   private endSubject = new Subject<Date>();
-
 
   data$: Observable<Weight[]>;
   last10$: Observable<Weight[]>;
@@ -45,12 +41,19 @@ export class AppComponent implements OnInit, OnDestroy {
     private afStore: AngularFirestore,
     private swUpdate: SwUpdate
   ) {
-    this.collection = afStore.collection<DBWeight>('weight', (ref => ref.orderBy('date')));
+    this.collection = afStore.collection<DBWeight>('weight', ref =>
+      ref.orderBy('date')
+    );
     this.data$ = this.collection.valueChanges().pipe(
       map((value: DBWeight[]) => {
-        return value.map((v): Weight => {
-          return { value: v.value, date: (v.date as unknown as Timestamp).toDate() };
-        });
+        return value.map(
+          (v): Weight => {
+            return {
+              value: v.value,
+              date: ((v.date as unknown) as Timestamp).toDate()
+            };
+          }
+        );
       })
     );
     this.startSubject.next(this.startDate);
@@ -61,21 +64,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.last10$ = combineLatest(
       this.startSubject.asObservable().pipe(startWith(this.startDate)),
       this.endSubject.asObservable().pipe(startWith(this.endDate)),
-      this.data$).pipe(
+      this.data$
+    ).pipe(
       auditTime(1000),
       map(([start, end, values]) => {
-        console.log('called', { start: start.toDateString(), end: end.toDateString() });
-        return values.filter((v) => {
+        console.log('called', {
+          start: start.toDateString(),
+          end: end.toDateString()
+        });
+        return values.filter(v => {
           return endOfDay(v.date) > start && v.date < endOfDay(end);
         });
-      }));
+      })
+    );
 
     this.last10Avg$ = this.last10$.pipe(
       map((values: Weight[]) => {
         return (
           Math.round(
-            (values.reduce((acc, value: any) => acc + value.value, 0) / values.length) *
-            100
+            (values.reduce((acc, value: any) => acc + value.value, 0) /
+              values.length) *
+              100
           ) / 100
         );
       })
@@ -92,36 +101,41 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.max$ = this.data$.pipe(
-      map(values => values.reduce((acc, v): Weight => {
-        if (!acc) {
-          return v;
-        }
-        if (v.value > acc.value) {
-          return v;
-        }
-        return acc;
-      }, null))
+      map(values =>
+        values.reduce((acc, v): Weight => {
+          if (!acc) {
+            return v;
+          }
+          if (v.value > acc.value) {
+            return v;
+          }
+          return acc;
+        }, null)
+      )
     );
 
     this.min$ = this.data$.pipe(
-      map(values => values.reduce((acc, v): Weight => {
-        if (!acc) {
-          return v;
-        }
-        if (v.value < acc.value) {
-          return v;
-        }
-        return acc;
-      }, null))
+      map(values =>
+        values.reduce((acc, v): Weight => {
+          if (!acc) {
+            return v;
+          }
+          if (v.value < acc.value) {
+            return v;
+          }
+          return acc;
+        }, null)
+      )
     );
 
     this.current$ = this.data$.pipe(
       map(values => {
-        const [first, ...rest] = values.sort((a, b) => compareAsc(a.value, b.value)).map(v => v.value);
+        const [first] = values
+          .sort((a, b) => compareAsc(a.value, b.value))
+          .map(v => v.value);
         return first;
       })
     );
-
 
     this.stats$ = combineLatest(
       this.last10Avg$,
@@ -130,48 +144,56 @@ export class AppComponent implements OnInit, OnDestroy {
       this.max$,
       this.current$
     ).pipe(
-      map(([avg, diff, min, max, current]): Stats => {
-        return {
-          difference: diff,
-          average: avg,
-          min,
-          max,
-          current
-        };
-      })
+      map(
+        ([avg, diff, min, max, current]): Stats => {
+          return {
+            difference: diff,
+            average: avg,
+            min,
+            max,
+            current
+          };
+        }
+      )
     );
 
     this.hasValueToday$ = this.data$.pipe(
-      map((values) => {
-        return !!values.find(({ date }) => date.toDateString() === new Date().toDateString()
+      map(values => {
+        return !!values.find(
+          ({ date }) => date.toDateString() === new Date().toDateString()
         );
       })
     );
 
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
-        if (confirm('Une mise à jour est disponible. Voulez-vous l\'installer ?')) {
+        if (
+          confirm("Une mise à jour est disponible. Voulez-vous l'installer ?")
+        ) {
           window.location.reload();
         }
       });
     }
-
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  addValue(weight: Weight) {
-    const { uid } = this.afAuth.auth.currentUser;
-    this.collection.add({ value: weight.value, date: Timestamp.fromDate(weight.date), user: uid });
+  async addValue(weight: Weight) {
+    const { uid } = await this.afAuth.currentUser;
+    await this.collection.add({
+      value: weight.value,
+      date: Timestamp.fromDate(weight.date),
+      user: uid
+    });
   }
 
-  signIn({ login, password }: { login: string; password: string }) {
-    this.afAuth.auth.signInWithEmailAndPassword(login, password);
+  async signIn({ login, password }: { login: string; password: string }) {
+    await this.afAuth.signInWithEmailAndPassword(login, password);
   }
 
-  dateChange({ start, end }: { start: Date, end: Date }) {
+  dateChange({ start, end }: { start: Date; end: Date }) {
     console.log('changed');
     this.startDate = start;
     this.endDate = end;

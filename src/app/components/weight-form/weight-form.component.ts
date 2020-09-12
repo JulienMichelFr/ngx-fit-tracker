@@ -8,7 +8,7 @@ import { Weight } from '../../models';
   styleUrls: ['./weight-form.component.scss']
 })
 export class WeightFormComponent implements OnInit {
-  @Output() submit = new EventEmitter<Weight>();
+  @Output() addWeight = new EventEmitter<Weight>();
 
   public form = new FormGroup({
     date: new FormControl(new Date(), [Validators.required]),
@@ -21,7 +21,7 @@ export class WeightFormComponent implements OnInit {
 
   doSubmit() {
     if (this.form.valid) {
-      this.submit.emit(this.form.value);
+      this.addWeight.emit(this.form.value);
       this.form.reset();
     }
   }

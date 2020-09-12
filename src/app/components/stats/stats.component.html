@@ -5,7 +5,10 @@
         <p>Average</p>
         <h1>{{ values?.average }}</h1>
       </div>
-      <div [class.negative]="values?.difference <= 0" [class.positive]="values?.difference > 0">
+      <div
+        [class.negative]="values?.difference <= 0"
+        [class.positive]="values?.difference > 0"
+      >
         <p>Difference</p>
         <h1>{{ values?.difference }}</h1>
       </div>
@@ -13,15 +16,21 @@
     <div class="row">
       <div>
         <p>Min</p>
-        <h1>{{ values?.min?.value }} le {{ values?.min?.date | date: 'dd/MM/yyyy' }}</h1>
+        <h1>
+          {{ values?.min?.value }} le
+          {{ values?.min?.date | date: 'dd/MM/yyyy' }}
+        </h1>
       </div>
       <div>
         <p>Max</p>
-        <h1>{{ values?.max?.value }} le {{ values?.max?.date | date: 'dd/MM/yyyy' }}</h1>
+        <h1>
+          {{ values?.max?.value }} le
+          {{ values?.max?.date | date: 'dd/MM/yyyy' }}
+        </h1>
       </div>
       <div>
         <p>Current</p>
-        <h1>{{ values?.current}}</h1>
+        <h1>{{ values?.current }}</h1>
       </div>
     </div>
   </mat-card-content>
