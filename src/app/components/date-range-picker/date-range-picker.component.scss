@@ -1,16 +1,14 @@
 .container {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   width: 100%;
+  gap: 10px;
 
   mat-form-field {
     flex: 1 1 auto;
-
-    &:first-of-type {
-      margin-right: 10px;
-    }
   }
 }
 button[mat-raised-button] {
   margin-right: 10px;
+  flex: 1 1 auto;
 }
