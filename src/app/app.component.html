@@ -1,16 +1,12 @@
-<div *ngIf="afAuth.user | async as user; else showLogin">
-  <div *ngIf="!(hasValueToday$ | async)">
-    <app-weight-form (addWeight)="addValue($event)"></app-weight-form>
-    <hr />
-  </div>
+<div class="container" *ngIf="afAuth.user | async as user; else showLogin">
+  <app-weight-form *ngIf="!(hasValueToday$ | async)" (addWeight)="addValue($event)"></app-weight-form>
   <app-stats [values]="stats$ | async"></app-stats>
-  <hr />
   <app-date-range-picker
     [start]="startDate"
     [end]="endDate"
     (rangeChange)="dateChange($event)"
   ></app-date-range-picker>
-  <mat-tab-group>
+  <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Graph">
       <app-chart [data]="last10$ | async"></app-chart>
     </mat-tab>

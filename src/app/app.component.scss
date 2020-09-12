@@ -4,6 +4,9 @@ form mat-card-content {
   align-items: stretch;
 }
 
-mat-card {
-  //margin-top: 15px;
+.container {
+  padding: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
 }
