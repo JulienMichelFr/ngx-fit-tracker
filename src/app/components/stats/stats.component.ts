@@ -9,6 +9,10 @@ import { Stats } from '../../models';
 export class StatsComponent implements OnInit {
   @Input() values: Stats;
 
+  get loaded(): boolean {
+    return !!this.values;
+  }
+
   constructor() {}
 
   ngOnInit() {}
