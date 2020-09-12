@@ -27,7 +27,7 @@ export class ChartComponent implements AfterViewInit, OnChanges {
     if (!this.chart) {
       return;
     }
-    if (changes && changes.data && changes.data.currentValue) {
+    if (changes?.data?.currentValue) {
       this.chart.data.labels = (this.data || []).map(({ date }) =>
         new Date(date).toLocaleDateString()
       );
