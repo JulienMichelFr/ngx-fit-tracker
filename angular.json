@@ -120,9 +120,16 @@
               "devServerTarget": "fit-tracker:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
   },
-  "defaultProject": "fit-tracker"
+  "defaultProject": "fit-tracker",
+  "cli": {
+    "analytics": false
+  }
 }
