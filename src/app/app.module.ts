@@ -21,7 +21,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ChartComponent } from './components/chart/chart.component';
 import { WeightFormComponent } from './components/weight-form/weight-form.component';
 import { StatsComponent } from './components/stats/stats.component';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ValuesTableComponent } from './components/values-table/values-table.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
@@ -59,7 +59,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSortModule,
     MatProgressSpinnerModule
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
+    {
+      provide: SETTINGS,
+      useValue: environment.production
+        ? undefined
+        : {
+            host: 'localhost:8080',
+            ssl: false
+          }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
