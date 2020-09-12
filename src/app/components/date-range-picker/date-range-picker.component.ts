@@ -1,8 +1,26 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SubSink } from 'subsink';
-import { distinctUntilChanged, filter, skipWhile } from 'rxjs/operators';
-import { endOfMonth, endOfWeek, fromUnixTime, startOfMonth, startOfWeek, subDays, subMonths, subWeeks } from 'date-fns';
+import { distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import {
+  endOfMonth,
+  endOfWeek,
+  fromUnixTime,
+  startOfMonth,
+  startOfWeek,
+  subDays,
+  subMonths,
+  subWeeks
+} from 'date-fns';
 
 enum RangeEnum {
   LAST_10 = 'last10',
@@ -28,7 +46,7 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
   @Input() start: Date;
   @Input() end: Date;
 
-  @Output() rangeChange = new EventEmitter<{ start: Date, end: Date }>();
+  @Output() rangeChange = new EventEmitter<{ start: Date; end: Date }>();
 
   form: FormGroup;
   maxDate = new Date();
@@ -74,12 +92,14 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.sink.add(
-      this.form.valueChanges.pipe(
-        skipWhile(() => this.form.invalid),
-        distinctUntilChanged()
-      ).subscribe((value) => {
-        this.rangeChange.emit(value);
-      })
+      this.form.valueChanges
+        .pipe(
+          skipWhile(() => this.form.invalid),
+          distinctUntilChanged()
+        )
+        .subscribe(value => {
+          this.rangeChange.emit(value);
+        })
     );
   }
 
@@ -89,15 +109,21 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.start && changes.start.currentValue) {
-      this.form.patchValue({ start: changes.start.currentValue }, { emitEvent: false });
+      this.form.patchValue(
+        { start: changes.start.currentValue },
+        { emitEvent: false }
+      );
     }
     if (changes.end && changes.end.currentValue) {
-      this.form.patchValue({ end: changes.end.currentValue }, { emitEvent: false });
+      this.form.patchValue(
+        { end: changes.end.currentValue },
+        { emitEvent: false }
+      );
     }
   }
 
   selectRange(range: CustomRange) {
-    let result: { start: Date, end: Date };
+    let result: { start: Date; end: Date };
     switch (range.id) {
       case RangeEnum.LAST_10:
         result = { start: subDays(new Date(), 10), end: new Date() };
@@ -109,13 +135,22 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
         result = { start: startOfWeek(new Date()), end: endOfWeek(new Date()) };
         break;
       case RangeEnum.LAST_WEEK:
-        result = { start: startOfWeek(subWeeks(new Date, 1)), end: endOfWeek(subWeeks(new Date, 1)) };
+        result = {
+          start: startOfWeek(subWeeks(new Date(), 1)),
+          end: endOfWeek(subWeeks(new Date(), 1))
+        };
         break;
       case RangeEnum.CURRENT_MONTH:
-        result = { start: startOfMonth(new Date()), end: endOfMonth(new Date()) };
+        result = {
+          start: startOfMonth(new Date()),
+          end: endOfMonth(new Date())
+        };
         break;
       case RangeEnum.LAST_MONTH:
-        result = { start: startOfMonth(subMonths(new Date(), 1)), end: endOfMonth(subMonths(new Date(), 1)) };
+        result = {
+          start: startOfMonth(subMonths(new Date(), 1)),
+          end: endOfMonth(subMonths(new Date(), 1))
+        };
         break;
       case RangeEnum.SINCE_START:
         result = { start: fromUnixTime(0), end: new Date() };
@@ -126,5 +161,4 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.form.patchValue(result);
   }
-
 }
