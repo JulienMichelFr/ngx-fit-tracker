@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Weight } from '../../models';
 import { Observable, Subject } from 'rxjs';
 

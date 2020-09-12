@@ -4,15 +4,16 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_DATE_LOCALE,
-  MatButtonModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatNativeDateModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { LoginComponent } from './components/login/login.component';
