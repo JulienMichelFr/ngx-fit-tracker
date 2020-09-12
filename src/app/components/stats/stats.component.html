@@ -1,37 +1,32 @@
-<mat-card>
-  <mat-card-content>
-    <div class="row">
-      <div>
-        <p>Average</p>
-        <h1>{{ values?.average }}</h1>
-      </div>
-      <div
-        [class.negative]="values?.difference <= 0"
-        [class.positive]="values?.difference > 0"
-      >
-        <p>Difference</p>
-        <h1>{{ values?.difference }}</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <p>Min</p>
-        <h1>
-          {{ values?.min?.value }} le
-          {{ values?.min?.date | date: 'dd/MM/yyyy' }}
-        </h1>
-      </div>
-      <div>
-        <p>Max</p>
-        <h1>
-          {{ values?.max?.value }} le
-          {{ values?.max?.date | date: 'dd/MM/yyyy' }}
-        </h1>
-      </div>
-      <div>
-        <p>Current</p>
-        <h1>{{ values?.current }}</h1>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div style="display: flex; flex-flow: row; gap: 10px;">
+  <mat-card>
+    <mat-card-title>Average</mat-card-title>
+    <mat-card-content *ngIf="loaded; else loadingText">{{ values?.average }} Kg</mat-card-content>
+  </mat-card>
+  <mat-card [class.negative]="values?.difference <= 0" [class.positive]="values?.difference > 0">
+    <mat-card-title>Diff</mat-card-title>
+    <mat-card-content *ngIf="loaded; else loadingText">{{ values?.difference }} Kg
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Min</mat-card-title>
+    <mat-card-content *ngIf="loaded; else loadingText">
+      {{ values?.min?.value }} Kg <br>
+      le {{ values?.min?.date | date: 'dd/MM/yyyy' }}
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Max</mat-card-title>
+    <mat-card-content *ngIf="loaded; else loadingText">
+      {{ values?.max?.value }} Kg <br>
+      le {{ values?.max?.date | date: 'dd/MM/yyyy' }}
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Current</mat-card-title>
+    <mat-card-content *ngIf="loaded; else loadingText">{{ values?.current }} Kg</mat-card-content>
+  </mat-card>
+</div>
+<ng-template #loadingText>
+  <mat-spinner style="margin: auto" mode="indeterminate"></mat-spinner>
+</ng-template>
