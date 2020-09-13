@@ -144,4 +144,8 @@ export class DashboardPageComponent implements OnInit {
   addValue(weight: Weight) {
     return this.weightService.addWeight(weight);
   }
+
+  removeValue(weight: Weight) {
+    return this.weightService.deleteWeight(weight);
+  }
 }

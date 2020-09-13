@@ -30,6 +30,9 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmDeleteDialogComponent } from './components/confirm-delete-dialog/confirm-delete-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
     ValuesTableComponent,
     DateRangePickerComponent,
     LoginPageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    ConfirmDeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +69,9 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
@@ -79,6 +85,7 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
           }
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDeleteDialogComponent]
 })
 export class AppModule {}
