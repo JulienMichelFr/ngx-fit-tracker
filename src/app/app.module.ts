@@ -26,6 +26,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { ValuesTableComponent } from './components/values-table/values-table.component';
 import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     WeightFormComponent,
     StatsComponent,
     ValuesTableComponent,
-    DateRangePickerComponent
+    DateRangePickerComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    AppRoutingModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },

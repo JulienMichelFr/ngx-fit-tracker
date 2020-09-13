@@ -10,7 +10,7 @@ export class LoginComponent implements OnInit {
   @Output() login = new EventEmitter<{ login: string; password: string }>();
 
   form = new FormGroup({
-    login: new FormControl('', [Validators.email, Validators.required]),
+    email: new FormControl('', [Validators.email, Validators.required]),
     password: new FormControl('', [Validators.minLength(6)])
   });
 
