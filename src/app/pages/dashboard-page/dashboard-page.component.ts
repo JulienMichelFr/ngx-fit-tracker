@@ -45,13 +45,13 @@ export class DashboardPageComponent implements OnInit {
 
     this.last10Avg$ = this.last10$.pipe(
       map((values: Weight[]) => {
-        return (
+        const result =
           Math.round(
             (values.reduce((acc, value: any) => acc + value.value, 0) /
               values.length) *
               100
-          ) / 100
-        );
+          ) / 100;
+        return Number.isNaN(result) ? 0 : result;
       })
     );
     this.last10Diff$ = this.last10$.pipe(

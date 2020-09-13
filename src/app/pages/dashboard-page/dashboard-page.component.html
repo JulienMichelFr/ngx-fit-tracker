@@ -5,6 +5,7 @@
     [end]="endDate"
     (rangeChange)="dateChange($event)"
   ></app-date-range-picker>
+  <app-stats [values]="stats$ | async"></app-stats>
   <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Graph">
       <app-chart [data]="last10$ | async"></app-chart>
