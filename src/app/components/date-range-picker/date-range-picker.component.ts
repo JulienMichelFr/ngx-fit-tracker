@@ -53,31 +53,31 @@ export class DateRangePickerComponent implements OnInit, OnDestroy, OnChanges {
   ranges: CustomRange[] = [
     {
       id: RangeEnum.LAST_10,
-      label: '10 jours'
+      label: 'Last 10 days'
     },
     {
       id: RangeEnum.LAST_30,
-      label: '30 jours'
+      label: 'Last 30 days'
     },
     {
       id: RangeEnum.CURRENT_WEEK,
-      label: 'Semaine en cours'
+      label: 'Current week'
     },
     {
       id: RangeEnum.LAST_WEEK,
-      label: 'Semaine dernière'
+      label: 'Last week'
     },
     {
       id: RangeEnum.CURRENT_MONTH,
-      label: 'Mois en cours'
+      label: 'Current month'
     },
     {
       id: RangeEnum.LAST_MONTH,
-      label: 'Mois dernier'
+      label: 'Last Month'
     },
     {
       id: RangeEnum.SINCE_START,
-      label: 'Depuis le début'
+      label: 'Since start'
     }
   ];
 
