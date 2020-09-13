@@ -1,29 +1,15 @@
 <mat-card>
   <mat-card-title>Range</mat-card-title>
   <mat-card-content>
-    <div class="container" [formGroup]="form">
+    <div class="container">
       <mat-form-field>
-        <input
-          matInput
-          [matDatepicker]="startDatePicker"
-          formControlName="start"
-          placeholder="Start"
-          [max]="end"
-          (click)="startDatePicker.open()"
-        />
-        <mat-datepicker touchUi="true" #startDatePicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          [matDatepicker]="endDateDatePicker"
-          formControlName="end"
-          placeholder="End"
-          [min]="start"
-          (click)="endDateDatePicker.open()"
-          [max]="maxDate"
-        />
-        <mat-datepicker touchUi="true" #endDateDatePicker></mat-datepicker>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input (click)="picker.open()" [formGroup]="form" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="Start date">
+          <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker touchUi="true" #picker></mat-date-range-picker>
       </mat-form-field>
     </div>
     <div class="container">
