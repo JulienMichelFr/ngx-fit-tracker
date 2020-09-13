@@ -28,6 +28,8 @@ import { DateRangePickerComponent } from './components/date-range-picker/date-ra
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { AppRoutingModule } from './app-routing.module';
     StatsComponent,
     ValuesTableComponent,
     DateRangePickerComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    DashboardPageComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +49,7 @@ import { AppRoutingModule } from './app-routing.module';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFireAuthGuardModule,
     AngularFirestoreModule,
     MatCardModule,
     MatFormFieldModule,
