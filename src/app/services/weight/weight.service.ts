@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,11 @@ import Timestamp = firestore.Timestamp;
 export class WeightService {
   private collection: AngularFirestoreCollection<
     DBWeight
-  > = this.afStore.collection<DBWeight>('weight', ref => ref.orderBy('date'));
+  > = this.afStore.collection<DBWeight>('weight', ref => {
+    return ref
+      .orderBy('date')
+      .where('user', '==', firebase.auth().currentUser.uid);
+  });
 
   constructor(
     private afStore: AngularFirestore,
