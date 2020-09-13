@@ -1,5 +1,4 @@
 <div class="container">
-<!--  <app-weight-form (addWeight)="addValue($event)"></app-weight-form>-->
   <app-weight-form *ngIf="!(hasValueToday$ | async)" (addWeight)="addValue($event)"></app-weight-form>
   <app-date-range-picker
     [start]="startDate"
