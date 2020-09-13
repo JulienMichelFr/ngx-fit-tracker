@@ -185,10 +185,6 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  async signIn({ login, password }: { login: string; password: string }) {
-    await this.afAuth.signInWithEmailAndPassword(login, password);
-  }
-
   dateChange({ start, end }: { start: Date; end: Date }) {
     console.log('changed');
     this.startDate = start;
