@@ -10,6 +10,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { firestore } from 'firebase/app';
 import Timestamp = firestore.Timestamp;
 import * as firebase from 'firebase/app';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from '../../components/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -25,26 +27,40 @@ export class WeightService {
 
   constructor(
     private afStore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private dialog: MatDialog
   ) {}
 
   async addWeight(weight: Weight) {
     const { uid } = await this.afAuth.currentUser;
-    await this.collection.add({
+    const id = this.afStore.createId();
+    await this.collection.doc(id).set({
       value: weight.value,
       date: Timestamp.fromDate(weight.date),
-      user: uid
+      user: uid,
+      id
     });
   }
 
   getWeights(): Observable<Weight[]> {
-    return this.collection.valueChanges().pipe(
+    return this.collection.valueChanges({ idField: 'id' }).pipe(
       map((values: DBWeight[]) => {
         return values.map<Weight>(v => ({
           value: v.value,
-          date: v.date.toDate()
+          date: v.date.toDate(),
+          id: v.id
         }));
       })
     );
+  }
+
+  async deleteWeight(weight) {
+    const dialog = this.dialog.open(ConfirmDeleteDialogComponent);
+    try {
+      const result = await dialog.afterClosed().toPromise();
+      if (result) {
+        return this.collection.doc(weight.id).delete();
+      }
+    } catch {}
   }
 }

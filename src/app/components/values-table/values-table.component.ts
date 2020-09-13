@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Weight } from '../../models';
@@ -13,7 +20,9 @@ export class ValuesTableComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   @Input() values: Weight[] = [];
-  displayedColumns = ['date', 'value'];
+  displayedColumns = ['date', 'value', 'actions'];
+
+  @Output() remove: EventEmitter<Weight> = new EventEmitter<Weight>();
 
   ngAfterViewInit() {}
 }
