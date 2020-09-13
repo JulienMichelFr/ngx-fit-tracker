@@ -5,7 +5,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private afAuth: AngularFireAuth) {}
+  constructor(private afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe(v => console.log(v));
+  }
 
   async login({ email, password }) {
     return await this.afAuth.signInWithEmailAndPassword(email, password);

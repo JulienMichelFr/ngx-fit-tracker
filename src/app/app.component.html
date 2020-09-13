@@ -1,22 +1,3 @@
-<!--
-<div class="container" *ngIf="afAuth.user | async as user">
-  <app-weight-form *ngIf="!(hasValueToday$ | async)" (addWeight)="addValue($event)"></app-weight-form>
-  <app-stats [values]="stats$ | async"></app-stats>
-  <app-date-range-picker
-    [start]="startDate"
-    [end]="endDate"
-    (rangeChange)="dateChange($event)"
-  ></app-date-range-picker>
-  <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="Graph">
-      <app-chart [data]="last10$ | async"></app-chart>
-    </mat-tab>
-    <mat-tab label="Values">
-      <app-values-table [values]="last10$ | async"></app-values-table>
-    </mat-tab>
-  </mat-tab-group>
-</div>
--->
 <div class="container">
   <router-outlet></router-outlet>
 </div>
