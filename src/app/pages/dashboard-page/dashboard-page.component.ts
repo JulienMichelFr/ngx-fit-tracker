@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { WeightService } from '../../services/weight/weight.service';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { Stats, Weight } from '../../models';
-import { compareAsc, endOfDay, startOfDay, subDays } from 'date-fns';
-import { auditTime, map, startWith, tap } from 'rxjs/operators';
+import { compareDesc, endOfDay, startOfDay, subDays } from 'date-fns';
+import { auditTime, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -96,7 +96,7 @@ export class DashboardPageComponent implements OnInit {
     this.current$ = this.data$.pipe(
       map(values => {
         const [first] = values
-          .sort((a, b) => compareAsc(a.value, b.value))
+          .sort((a, b) => compareDesc(a.date, b.date))
           .map(v => v.value);
         return first;
       })

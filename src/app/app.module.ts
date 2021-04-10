@@ -79,7 +79,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     {
       provide: SETTINGS,
-      useValue: environment.production
+      useValue: environment.firebaseProduction
         ? undefined
         : {
             host: 'localhost:8080',
