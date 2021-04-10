@@ -1,4 +1,19 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "weight",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }
